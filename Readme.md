@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Илья Лебедев](https://up.htmlacademy.ru/javascript/18/user/1117493).
-* Наставник: `Неизвестно`.
+* Наставник: Александр Пасунько.
 
 ---
 
