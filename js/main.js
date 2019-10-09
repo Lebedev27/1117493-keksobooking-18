@@ -1,42 +1,64 @@
 'use strict';
+var MIN_Y = 130;
+var MAX_Y = 630;
+var MAX_X = document.querySelector('.map__overlay').offsetWidth;
 
-var createMocks = function () {
-  var MOCKS_LENGTH = 8;
-  var TYPE_ARRAY = ['palace', 'flat', 'house', 'bungalo'];
-  var CHECKIN_ARRAY = ['12:00', '13:00', '14:00'];
-  var CHECKOUT_ARRAY = ['12:00', '13:00', '14:00'];
-  var FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var PHOTOS_ARRAY = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  var mocksArray = [];
 
-  for (var i = 0; i < MOCKS_LENGTH; i++) {
-    var mocksObject = {
-      'author': {
+var getRandomNumber = function (min, max) {
+  return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + min;
+};
+
+
+var getRandomArrElement = function (arr) {
+  return arr[getRandomNumber(0, arr.length - 1)];
+};
+
+
+var getMaxArrElement = function (arr) {
+  return Math.max.apply(null, arr);
+};
+
+
+var createAdvert = function (number) {
+  var timeArr = ['12:00', '13:00', '14:00'];
+  var pricesArr = [1, 1000];
+  var titlesArr = ['заголовок1', 'заголовок 2', 'заголовок 3'];
+  var typesArr = ['palace', 'flat', 'house', 'bungalo'];
+  var roomsArr = [1, 2, 3];
+  var guestsArr = [0, 1, 2];
+  var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var advertArr = [];
+
+  for (var i = 0; i < number; i++) {
+    var advert = {
+      author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
       },
-
-      'offer': {
-        'title': 'Заголовок',
-        'address': '{{location.x}}, {{location.y}}',
-        'price': 0,
-        'type': 'palace, flat, house или bungalo',
-        'rooms': 0,
-        'guests': 0,
-        'checkin': 'строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00',
-        'checkout': 'строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00',
-        'features': FEATURES_ARRAY,
-        'description': 'описание',
-        'photos': PHOTOS_ARRAY,
+      offer: {
+        title: getRandomArrElement(titlesArr),
+        price: getRandomArrElement(pricesArr[0], getMaxArrElement(pricesArr)),
+        type: getRandomArrElement(typesArr),
+        rooms: getRandomArrElement(roomsArr),
+        guests: getRandomArrElement(guestsArr),
+        checkin: getRandomArrElement(timeArr),
+        checkout: getRandomArrElement(timeArr),
+        features: getRandomArrElement(featuresArr),
+        photos: getRandomArrElement(photosArr)
       },
-
-      'location': {
-        'x': 'случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.',
-        'y': 'случайное число, координата y метки на карте от 130 до 630'
+      location: {
+        x: getRandomNumber(0, MAX_X),
+        y: getRandomNumber(MIN_Y, MAX_Y)
       }
     };
-    mocksArray.push(mocksObject);
+    advert.offer.address = advert.location.x + ', ' + advert.location.y + '.';
+    advert.offer.description = advert.offer.type + ', ' + advert.offer.price + '.';
+    advertArr.push(advert);
   }
-  return mocksArray;
+
+  return advertArr;
+
 };
-console.log(createMocks());
+
+var advertArr = createAdvert(8);
 
