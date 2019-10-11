@@ -1,8 +1,17 @@
 'use strict';
+
+
+var QUANTITY = 8;
 var MIN_Y = 130;
 var MAX_Y = 630;
+var PIN_OFFSET_X = 25;
+var PIN_OFFSET_Y = 70;
+var MIN_X = 133;
 var MAX_X = document.querySelector('.map__overlay').offsetWidth;
 
+var map = document.querySelector('.map');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var pinList = document.querySelector('.map__pins');
 
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + min;
@@ -31,7 +40,7 @@ var createAdvert = function (number) {
   var advertArr = [];
 
   for (var i = 0; i < number; i++) {
-    var advert = {
+    advertArr[i] = {
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
       },
@@ -47,18 +56,41 @@ var createAdvert = function (number) {
         photos: getRandomArrElement(photosArr)
       },
       location: {
-        x: getRandomNumber(0, MAX_X),
-        y: getRandomNumber(MIN_Y, MAX_Y)
+        x: getRandomNumber(MIN_X - PIN_OFFSET_X, MAX_X - PIN_OFFSET_X) + 'px',
+        y: getRandomNumber(MIN_Y - PIN_OFFSET_Y, MAX_Y - PIN_OFFSET_Y) + 'px'
       }
     };
-    advert.offer.address = advert.location.x + ', ' + advert.location.y + '.';
-    advert.offer.description = advert.offer.type + ', ' + advert.offer.price + '.';
-    advertArr.push(advert);
   }
 
   return advertArr;
 
 };
 
-var advertArr = createAdvert(8);
+map.classList.remove('map--faded');
+
+var setPin = function (data) {
+  var pinElement = pinTemplate.cloneNode(true);
+  var setPicture = pinElement.querySelector('img');
+
+  pinElement.style.left = data.location.x;
+  pinElement.style.top = data.location.y;
+  setPicture.src = data.author.avatar;
+  setPicture.alt = data.offer.type;
+
+  return pinElement;
+};
+
+var renderPins = function () {
+  var element = document.createDocumentFragment();
+  var pinContent = createAdvert(QUANTITY);
+
+  for (var j = 0; j < QUANTITY; j++) {
+    element.appendChild(setPin(pinContent[j]));
+  }
+
+  pinList.appendChild(element);
+};
+
+renderPins();
+
 
