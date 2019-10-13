@@ -5,7 +5,7 @@ var QUANTITY = 8;
 var MIN_Y = 130;
 var MAX_Y = 630;
 var PIN_OFFSET_X = 25;
-var PIN_OFFSET_Y = 35;
+var PIN_OFFSET_Y = 70;
 var MIN_X = 133;
 var MAX_X = document.querySelector('.map__overlay').offsetWidth;
 
@@ -81,5 +81,3 @@ var setPin = function () {
   }
 };
 setPin();
-
-
