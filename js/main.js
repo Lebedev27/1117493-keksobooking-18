@@ -23,10 +23,6 @@ var getRandomArrElement = function (arr) {
 };
 
 
-var getMaxArrElement = function (arr) {
-  return Math.max.apply(null, arr);
-};
-
 var timeArr = ['12:00', '13:00', '14:00'];
 var pricesArr = [1, 1000];
 var titlesArr = ['заголовок1', 'заголовок 2', 'заголовок 3'];
@@ -47,7 +43,7 @@ var createAdvert = function () {
       },
       offer: {
         title: getRandomArrElement(titlesArr),
-        price: getRandomArrElement(pricesArr[0], getMaxArrElement(pricesArr)),
+        price: getRandomArrElement(pricesArr),
         type: getRandomArrElement(typesArr),
         rooms: getRandomArrElement(roomsArr),
         guests: getRandomArrElement(guestsArr),
