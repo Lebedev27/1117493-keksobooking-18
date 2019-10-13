@@ -1,5 +1,4 @@
-@@ -0,0 +1,132 @@
-  'use strict';
+'use strict';
 
 
 var QUANTITY = 8;
