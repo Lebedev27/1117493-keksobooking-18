@@ -5,13 +5,17 @@ var QUANTITY = 8;
 var MIN_Y = 130;
 var MAX_Y = 630;
 var PIN_OFFSET_X = 25;
-var PIN_OFFSET_Y = 35;
+var PIN_OFFSET_Y = 70;
 var MIN_X = 133;
 var MAX_X = document.querySelector('.map__overlay').offsetWidth;
+
 
 var map = document.querySelector('.map');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var pinList = document.querySelector('.map__pins');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var mapFilter = document.querySelector('.map__filters-container');
+
 
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + min;
@@ -33,10 +37,9 @@ var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o
 var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 
-var createAdvert = function () {
-
+var createAdvert = function (number) {
   var advertArr = [];
-  for (var i = 0; i < QUANTITY; i++) {
+  for (var i = 0; i < number; i++) {
     advertArr[i] = {
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
@@ -60,24 +63,81 @@ var createAdvert = function () {
   }
 
   return advertArr;
+
 };
-var adverts = createAdvert();
+
+
+var setPin = function (pinItem) {
+  var pinElement = pinTemplate.cloneNode(true); // склонировать все содержимое этого элемента
+  pinElement.style.left = pinItem.location.x;
+  pinElement.style.top = pinItem.location.y;
+  pinElement.querySelector('img').src = pinItem.author.avatar;
+  pinElement.querySelector('img').alt = pinItem.offer.title;
+  return pinElement;
+};
+
+var setPins = function (arr) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < arr.length; i++) {
+    fragment.appendChild(setPin(arr[i]));
+  }
+
+  return pinList.appendChild(fragment);
+
+};
+
+
+var renderType = function (item) {
+  var typeName = item.offer.type;
+  if (typeName === 'flat') {
+    typeName = 'Квартира';
+  } else if (typeName === 'bungalo') {
+    typeName = 'Бунгало';
+  } else if (typeName === 'house') {
+    typeName = 'Дом';
+  } else if (typeName === 'palace') {
+    typeName = 'Дворец';
+  }
+
+  return typeName;
+
+};
+
+
+var setCard = function (cardItemArr) {
+  var cardElement = cardTemplate.cloneNode(true);
+  cardElement.querySelector('.popup__title').textContent = cardItemArr.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = cardItemArr.offer.address;
+  cardElement.querySelector('.popup__text--price').firstChild.nodeValue = cardItemArr.offer.price + ' P';
+  cardElement.querySelector('.popup__type').textContent = renderType(cardItemArr);
+  cardElement.querySelector('.popup__text--capacity').textContent = cardItemArr.offer.rooms + ' комнаты для ' + cardItemArr.offer.guests + ' ' + 'гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после:' + ' ' + cardItemArr.offer.checkin + ', ' + 'Выезд до:' + ' ' + cardItemArr.offer.checkout;
+  cardElement.querySelector('.popup__photos img').src = cardItemArr.offer.photos;
+  cardElement.querySelector('.popup__description').textContent = cardItemArr.offer.description;
+  cardElement.querySelector('.popup__avatar').src = cardItemArr.author.avatar;
+  cardElement.querySelector('.popup__features').innerHTML = '';
+
+  var featuresList = cardElement.querySelector('.popup__features');
+  featuresArr.forEach(function (li, i) {
+    li = document.createElement('li');
+    featuresList.appendChild(li);
+    li.classList.add('popup__feature', 'popup__feature--' + featuresArr[i]);
+  });
+
+  return cardElement;
+
+};
+
+
+var setCards = function (arr) {
+  var fragment = document.createDocumentFragment();
+  fragment.appendChild(setCard(arr[0]));
+
+  return map.insertBefore(fragment, mapFilter);
+
+};
 
 map.classList.remove('map--faded');
-
-var setPin = function () {
-  for (var i = 0; i < QUANTITY; i++) {
-    var pinElement = pinTemplate.cloneNode(true);
-    var setPicture = pinElement.querySelector('img');
-    var element = document.createDocumentFragment();
-
-    pinElement.style.left = adverts[i].location.x;
-    pinElement.style.top = adverts[i].location.y;
-    setPicture.src = adverts[i].author.avatar;
-    setPicture.alt = adverts[i].offer.type;
-    element.appendChild(pinElement);
-    pinList.appendChild(element);
-  }
-};
-
-setPin();
+var adverts = createAdvert(QUANTITY);
+setPins(adverts);
+setCards(adverts);
