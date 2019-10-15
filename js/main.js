@@ -27,6 +27,28 @@ var getRandomArrElement = function (arr) {
 };
 
 
+var getRandomLengthArray = function (array) {
+  var tempArray = [];
+  var isExist = false;
+
+  for (var i = 0; i < getRandomNumber(1, array.length); i++) {
+    tempArray[i] = getRandomArrElement(array);
+
+    for (var j = 0; j < i; j++) {
+      if (tempArray[j] === tempArray[i]) {
+        isExist = true;
+      }
+
+      if (isExist) {
+        --i;
+        isExist = false;
+      }
+    }
+  }
+  return tempArray;
+};
+
+
 var timeArr = ['12:00', '13:00', '14:00'];
 var pricesArr = [1, 1000];
 var titlesArr = ['заголовок1', 'заголовок 2', 'заголовок 3'];
@@ -52,7 +74,7 @@ var createAdvert = function (number) {
         guests: getRandomArrElement(guestsArr),
         checkin: getRandomArrElement(timeArr),
         checkout: getRandomArrElement(timeArr),
-        features: getRandomArrElement(featuresArr),
+        features: getRandomLengthArray(featuresArr),
         photos: getRandomArrElement(photosArr)
       },
       location: {
@@ -118,11 +140,11 @@ var setCard = function (cardItemArr) {
   cardElement.querySelector('.popup__features').innerHTML = '';
 
   var featuresList = cardElement.querySelector('.popup__features');
-  featuresArr.forEach(function (li, i) {
-    li = document.createElement('li');
+  for (var i = 0; i < cardItemArr.offer.features.length; i++) {
+    var li = document.createElement('li');
+    li.classList.add('popup__feature', 'popup__feature--' + cardItemArr.offer.features[i]);
     featuresList.appendChild(li);
-    li.classList.add('popup__feature', 'popup__feature--' + featuresArr[i]);
-  });
+  }
 
   return cardElement;
 
