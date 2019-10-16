@@ -26,26 +26,17 @@ var getRandomArrElement = function (arr) {
   return arr[getRandomNumber(0, arr.length - 1)];
 };
 
+var getRandomLengthArray = function(array) {
+  var copyOfArray = array.slice();
+  var randomArray = [];
+  var counter = getRandomNumber(1, copyOfArray.length);
 
-var getRandomLengthArray = function (array) {
-  var tempArray = [];
-  var currArray = [];
-
-  for (var i = 0; i <= getRandomNumber(0, array.length); i++) {
-    var item = getRandomArrElement(array);
-    tempArray[item] = item;
+  for (var i = 0; i < counter; i++) {
+    randomArray.push(getRandomArrElement(copyOfArray, true));
   }
 
-  var i = 0;
-  for (item in tempArray) {
-    currArray[i] = tempArray[item];
-    i++;
-  }
-
-  currArray.sort();
-  return currArray;
+  return randomArray;
 };
-
 
 var timeArr = ['12:00', '13:00', '14:00'];
 var pricesArr = [1, 1000];
