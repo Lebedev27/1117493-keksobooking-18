@@ -29,23 +29,21 @@ var getRandomArrElement = function (arr) {
 
 var getRandomLengthArray = function (array) {
   var tempArray = [];
-  var isExist = false;
+  var currArray = [];
 
-  for (var i = 0; i < getRandomNumber(1, array.length); i++) {
-    tempArray[i] = getRandomArrElement(array);
-
-    for (var j = 0; j < i; j++) {
-      if (tempArray[j] === tempArray[i]) {
-        isExist = true;
-      }
-
-      if (isExist) {
-        --i;
-        isExist = false;
-      }
-    }
+  for (var i = 0; i <= getRandomNumber(0, array.length); i++) {
+    var item = getRandomArrElement(array);
+    tempArray[item] = item;
   }
-  return tempArray;
+
+  var i = 0;
+  for (item in tempArray) {
+    currArray[i] = tempArray[item];
+    i++;
+  }
+
+  currArray.sort();
+  return currArray;
 };
 
 
