@@ -8,14 +8,17 @@ var PIN_OFFSET_X = 25;
 var PIN_OFFSET_Y = 70;
 var MIN_X = 133;
 var MAX_X = document.querySelector('.map__overlay').offsetWidth;
+
 var MAIN_PIN_WIDTH = 62;
 var MAIN_PIN_HEIGHT = 70;
 var MAIN_PIN_ARROW = 13;
 var KEY_NAME = 13;
 
+
 var map = document.querySelector('.map');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var pinList = document.querySelector('.map__pins');
+
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var mapFilter = document.querySelector('.map__filters-container');
 var adForm = document.querySelector('.ad-form');
@@ -34,6 +37,7 @@ var setDisabled = function (collection) {
 setDisabled(fieldset);
 
 
+
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + min;
 };
@@ -42,6 +46,7 @@ var getRandomNumber = function (min, max) {
 var getRandomArrElement = function (arr) {
   return arr[getRandomNumber(0, arr.length - 1)];
 };
+
 
 var getRandomLengthArray = function(array) {
   var copyOfArray = array.slice();
@@ -59,6 +64,7 @@ var getRandomLengthArray = function(array) {
 var timeArr = ['12:00', '13:00', '14:00'];
 var pricesArr = [1, 1000];
 var titlesArr = ['заголовок 1', 'заголовок 2', 'заголовок 3'];
+
 var typesArr = ['palace', 'flat', 'house', 'bungalo'];
 var roomsArr = [1, 2, 3];
 var guestsArr = [0, 1, 2];
@@ -66,9 +72,11 @@ var photosArr = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o
 var featuresArr = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 
+
 var createAdvert = function (number) {
   var advertArr = [];
   for (var i = 0; i < number; i++) {
+
     advertArr[i] = {
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
@@ -81,7 +89,9 @@ var createAdvert = function (number) {
         guests: getRandomArrElement(guestsArr),
         checkin: getRandomArrElement(timeArr),
         checkout: getRandomArrElement(timeArr),
+
         features: getRandomLengthArray(featuresArr),
+
         photos: getRandomArrElement(photosArr)
       },
       location: {
@@ -94,6 +104,7 @@ var createAdvert = function (number) {
   return advertArr;
 
 };
+
 
 
 var setPin = function (pinItem) {
@@ -284,3 +295,4 @@ var checkValidForm = function () {
 setAddressCoords();
 switchOffForm();
 checkValidForm();
+
