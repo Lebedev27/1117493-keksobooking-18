@@ -5,10 +5,10 @@
   "description": "Личный проект «Кексобукинг» от HTML Academy",
   "repository": {
     "type": "git",
-    "url": "git@github.com:htmlacademy-javascript/1117493-keksobooking-18.git"
+    "url": "git@github.com:htmlacademy-javascript/907403-keksobooking-18.git"
   },
   "bugs": {
-    "url": "https://github.com/htmlacademy-javascript/1117493-keksobooking-18/issues"
+    "url": "https://github.com/htmlacademy-javascript/907403-keksobooking-18/issues"
   },
   "devDependencies": {
     "eslint": "6.3.0",
