@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
-* Студент: [Павел Позняк](https://up.htmlacademy.ru/javascript/18/user/907403).
-* Наставник: [Виктор Кан](https://htmlacademy.ru/profile/viktorkan).
+* Студент: [Илья Лебедев](https://up.htmlacademy.ru/javascript/18/user/1117493).
+* Наставник: Александр Пасунько.
 
 ---
 
