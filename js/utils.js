@@ -1,15 +1,24 @@
 'use strict';
 
 (function () {
-  var ENTER_KEY = 13;
-  var ESC_KEY = 27;
+  var ENTER_KEYCODE = 13;
+  var ESC_KEYCODE = 27;
   var pinImg = document.querySelector('.map__pin--main img');
   var map = document.querySelector('.map');
+  var mainPin = map.querySelector('.map__pin--main');
+  var address = document.querySelector('#address');
+  var setAdressCoordinates = function () {
+    var pinCoordinates = (mainPin.offsetLeft + pinImg.offsetWidth / 2) + ', ' + (mainPin.offsetTop + pinImg.offsetHeight);
+    address.setAttribute('value', pinCoordinates);
+  };
 
   window.utils = {
-    ENTER_KEY: ENTER_KEY,
-    ESC_KEY: ESC_KEY,
+    ENTER_KEYCODE: ENTER_KEYCODE,
+    ESC_KEYCODE: ESC_KEYCODE,
     pinImg: pinImg,
-    map: map
+    map: map,
+    mainPin: mainPin,
+    address: address,
+    setAdressCoordinates: setAdressCoordinates
   };
 })();

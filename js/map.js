@@ -3,7 +3,7 @@
 (function () {
   var mapFilter = window.utils.map.querySelector('.map__filters-container');
 
-  var createPinElement = function (data) {
+  var createPinElem = function (data) {
     var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
     var pinElem = pinTemplate.cloneNode(true);
     pinElem.style.left = data.location.x + 'px';
@@ -22,9 +22,9 @@
   var showCardHandler = function (data) {
     var card = document.querySelector('.map__card');
     if (card) {
-      window.utils.map.replaceChild(createCardElement(data), card);
+      window.utils.map.replaceChild(createCardElem(data), card);
     } else {
-      window.utils.map.insertBefore(createCardElement(data), mapFilter);
+      window.utils.map.insertBefore(createCardElem(data), mapFilter);
     }
     var popupClose = window.utils.map.querySelector('.popup__close');
     popupClose.focus();
@@ -40,12 +40,13 @@
         return 'Дом';
       case 'palace':
         return 'Дворец';
+      default:
+        return 'Неизвестный тип жилья: «' + type + '»';
     }
-    return true;
   };
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var createCardElement = function (data) {
+  var createCardElem = function (data) {
     var cardElem = cardTemplate.cloneNode(true);
     cardElem.querySelector('.popup__title').textContent = data.offer.title;
     cardElem.querySelector('.popup__text--address').textContent = data.offer.address;
@@ -88,14 +89,14 @@
 
   var closeCardHandler = function (evt) {
     var card = document.querySelector('.map__card');
-    if (evt.keyCode === window.utils.ESC_KEY && card) {
+    if (evt.keyCode === window.utils.ESC_KEYCODE && card) {
       evt.preventDefault();
       card.remove();
     }
   };
 
   window.map = {
-    createPinElement: createPinElement
+    createPinElem: createPinElem
   };
 
 })();
