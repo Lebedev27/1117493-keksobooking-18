@@ -21,8 +21,8 @@
         'Маленькая квартира',
         'Большой дворец',
         'Маленький дворец',
-        'Большой гостевой домик',
-        'Маленький гостевой домик',
+        'Вилла',
+        'Домик',
         'Большое бунгало',
         'Маленькое бунгало'
       ],
@@ -145,10 +145,10 @@
     return arr;
   };
 
-  var createMockArray = createObject();
+  var newMockArray = createObject();
 
   window.data = {
-    newMockArray: createMockArray,
+    newMockArray: newMockArray,
   };
 
 })();

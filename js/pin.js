@@ -1,16 +1,9 @@
 'use strict';
 
 (function () {
-  var address = document.querySelector('#address');
   var mapPins = window.utils.map.querySelector('.map__pins');
-  var mainPin = window.utils.map.querySelector('.map__pin--main');
   var formFieldset = document.querySelectorAll('.notice form fieldset');
   var sectionForm = document.querySelector('.notice form');
-
-  var setAddressCoordinates = function () {
-    var pinCoordinates = (mainPin.offsetLeft + window.utils.pinImg.offsetWidth / 2) + ', ' + (mainPin.offsetTop + window.utils.pinImg.offsetHeight);
-    address.setAttribute('value', pinCoordinates);
-  };
 
   var activateFormFildset = function () {
     formFieldset.forEach(function (field) {
@@ -22,7 +15,7 @@
 
   var createPins = function (fragment, arr) {
     arr.forEach(function (el) {
-      fragment.appendChild(window.map.createPinElement(el));
+      fragment.appendChild(window.map.createPinElem(el));
     });
   };
 
@@ -34,23 +27,23 @@
     }
   };
 
-  var activatePageHandler = function () {
+  var activationPageHandler = function () {
     window.utils.map.classList.remove('map--faded');
     sectionForm.classList.remove('ad-form--disabled');
     renderPins();
-    setAddressCoordinates();
+    window.utils.setAdressCoordinates();
     activateFormFildset();
   };
 
-  mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.ENTER_KEY) {
+  window.utils.mainPin.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.utils.ENTER_KEYCODE) {
       evt.preventDefault();
-      activatePageHandler();
+      activationPageHandler();
     }
   });
 
-  mainPin.addEventListener('click', function () {
-    activatePageHandler();
+  window.utils.mainPin.addEventListener('click', function () {
+    activationPageHandler();
   });
 
   var blockFormFieldset = function () {
@@ -61,7 +54,7 @@
 
   blockFormFieldset();
 
-  var cleanMap = function () {
+  var clearMap = function () {
     var pinsBtn = document.querySelectorAll('button[type="button"]');
     var card = document.querySelector('.map__card');
     if (card) {
@@ -72,18 +65,75 @@
     });
   };
 
-  var removeAddressCoordinates = function () {
-    address.setAttribute('value', null);
+  var removeAdressCoordinates = function () {
+    window.utils.address.setAttribute('value', null);
   };
 
   var blockPageHandler = function () {
     window.utils.map.classList.add('map--faded');
     sectionForm.classList.add('ad-form--disabled');
-    cleanMap();
-    removeAddressCoordinates();
+    clearMap();
+    removeAdressCoordinates();
     blockFormFieldset();
   };
 
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', blockPageHandler);
+
+  window.pagehandler = {
+    activationPageHandler: activationPageHandler
+  };
+
+
+
+  window.utils.mainPin.addEventListener('mousedown', function (evt) {
+
+    window.pagehandler.activationPageHandler();
+
+    var minLimitX = 130;
+    var maxLimitX = 630;
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var mouseMoveHandler = function (moveEvt) {
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var coordsX = window.utils.mainPin.offsetLeft - shift.x;
+      var coordsY = window.utils.mainPin.offsetTop - shift.y;
+      var coordsMinX = minLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMaxX = maxLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
+      var coordsMaxY = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
+
+      coordsX = coordsX < coordsMinY ? coordsMinY : coordsX;
+      coordsX = coordsX > coordsMaxY ? coordsMaxY : coordsX;
+
+      coordsY = coordsY < coordsMinX ? coordsMinX : coordsY;
+      coordsY = coordsY > coordsMaxX ? coordsMaxX : coordsY;
+
+      window.utils.mainPin.style.left = coordsX + 'px';
+      window.utils.mainPin.style.top = coordsY + 'px';
+      window.utils.setAdressCoordinates();
+    };
+
+    var mouseUpHandler = function () {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+  });
 })();
