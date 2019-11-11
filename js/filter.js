@@ -1,14 +1,12 @@
 'use strict';
 
 (function () {
-  var MAX_PRICE = 50000;
-  var MIN_PRICE = 10000;
   var filter = document.querySelector('.map__filters');
-  var housingType = filter.querySelector('#housing-type');
-  var housingPrice = filter.querySelector('#housing-price');
-  var housingRooms = filter.querySelector('#housing-rooms');
-  var housingGuests = filter.querySelector('#housing-guests');
-  var mapFeature = filter.querySelectorAll('.map__checkbox');
+  var housingType = window.utils.filter.querySelector('#housing-type');
+  var housingPrice = window.utils.filter.querySelector('#housing-price');
+  var housingRooms = window.utils.filter.querySelector('#housing-rooms');
+  var housingGuests = window.utils.filter.querySelector('#housing-guests');
+  var mapCheckbox = window.utils.filter.querySelectorAll('.map__checkbox');
 
   var PriceRange = {
     LOW: 'low',
@@ -16,26 +14,34 @@
     HIGH: 'high'
   };
 
-  var filteringData = function (data, input, name) {
-    return String(input.value) === 'any' ? data : String(input.value) === String(data.offer[name]);
+  var filteringType = function (data) {
+    return String(housingType.value) === 'any' ? data : String(housingType.value) === String(data.offer.type);
   };
 
   var filteringPrice = function (data) {
     switch (housingPrice.value) {
       case PriceRange.LOW:
-        return data.offer.price < MIN_PRICE;
+        return data.offer.price < window.const.MIN_PRICE;
       case PriceRange.MIDDLE:
-        return data.offer.price >= MIN_PRICE && data.offer.price <= MAX_PRICE;
+        return data.offer.price >= window.const.MIN_PRICE && data.offer.price <= window.const.MAX_PRICE;
       case PriceRange.HIGH:
-        return data.offer.price > MAX_PRICE;
+        return data.offer.price > window.const.MAX_PRICE;
       default:
         return data;
     }
   };
 
+  var filteringRooms = function (data) {
+    return String(housingRooms.value) === 'any' ? data : String(housingRooms.value) === String(data.offer.rooms);
+  };
+
+  var filteringGuests = function (data) {
+    return String(housingGuests.value) === 'any' ? data : String(housingGuests.value) === String(data.offer.guests);
+  };
+
   var getCheckboxesValue = function () {
     var checkboxesValue = [];
-    mapFeature.forEach(function (input) {
+    mapCheckbox.forEach(function (input) {
       if (input.checked) {
         checkboxesValue.push(input.value);
       }
@@ -58,12 +64,12 @@
 
   var getFilteringData = function (data) {
     return data.filter(function (it) {
-      return filteringData(it, housingType, 'type') &&
-             filteringPrice(it) &&
-             filteringData(it, housingRooms, 'rooms') &&
-             filteringData(it, housingGuests, 'guests') &&
-             filteringCheckboxes(it);
-    }).slice(0, window.utils.PINS_LIMIT);
+      return filteringType(it) &&
+        filteringPrice(it) &&
+        filteringRooms(it) &&
+        filteringGuests(it) &&
+        filteringCheckboxes(it);
+    }).slice(0, window.const.PINS_MAXIMUM);
   };
 
   var changeTypeHandler = window.debounce(function () {
@@ -74,7 +80,6 @@
   filter.addEventListener('change', changeTypeHandler);
 
   window.filter = {
-    filter: filter,
     getFilteringData: getFilteringData
   };
 

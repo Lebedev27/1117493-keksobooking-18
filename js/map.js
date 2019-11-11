@@ -3,20 +3,20 @@
 (function () {
   var mapFilter = window.utils.map.querySelector('.map__filters-container');
 
-  var createPinElem = function (data) {
+  var createPinElement = function (data) {
     var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-    var pinElem = pinTemplate.cloneNode(true);
-    pinElem.style.left = data.location.x + 'px';
-    pinElem.style.top = data.location.y + 'px';
-    pinElem.querySelector('img').src = data.author.avatar;
-    pinElem.querySelector('img').alt = data.offer.title;
-    pinElem.classList.add('map__pin');
+    var pinElement = pinTemplate.cloneNode(true);
+    pinElement.style.left = data.location.x + 'px';
+    pinElement.style.top = data.location.y + 'px';
+    pinElement.querySelector('img').src = data.author.avatar;
+    pinElement.querySelector('img').alt = data.offer.title;
+    pinElement.classList.add('map__pin');
 
-    pinElem.addEventListener('click', function () {
+    pinElement.addEventListener('click', function () {
       showCardHandler(data);
     });
 
-    return pinElem;
+    return pinElement;
   };
 
   var showCardHandler = function (data) {
@@ -81,7 +81,7 @@
 
   var closeCardHandler = function (evt) {
     var card = document.querySelector('.map__card');
-    if (evt.keyCode === window.utils.ESC_KEYCODE && card) {
+    if (evt.keyCode === window.const.ESC_KEYCODE && card) {
       evt.preventDefault();
       card.remove();
     }
@@ -92,13 +92,13 @@
 
   var renderPins = function (data) {
     data.forEach(function (el) {
-      fragmentPin.appendChild(window.map.createPinElem(el));
+      fragmentPin.appendChild(window.map.createPinElement(el));
     });
     mapPins.appendChild(fragmentPin);
   };
 
   window.map = {
-    createPinElem: createPinElem,
+    createPinElement: createPinElement,
     renderPins: renderPins
   };
 

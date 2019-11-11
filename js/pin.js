@@ -30,9 +30,9 @@
   };
 
   var removeAdressCoordinates = function () {
-    window.utils.mainPin.style.left = window.utils.START_COORDS_X + 'px';
-    window.utils.mainPin.style.top = window.utils.START_COORDS_Y + 'px';
-    window.utils.setAdressCoordinates();
+    window.utils.mainPin.style.left = window.const.START_X + 'px';
+    window.utils.mainPin.style.top = window.const.START_Y + 'px';
+    window.utils.setAddressCoordinates();
   };
 
   var blockPageHandler = function () {
@@ -41,8 +41,9 @@
     clearMap();
     removeAdressCoordinates();
     blockFormFieldset();
+    window.loadPhooto.clearImg();
     document.querySelector('.ad-form').reset();
-    window.filter.filter.reset();
+    window.utils.filter.reset();
     window.utils.mainPin.addEventListener('click', activationPageHandler);
   };
 
@@ -60,7 +61,7 @@
       errorElem.remove();
     });
     window.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+      if (evt.keyCode === window.const.ESC_KEYCODE) {
         evt.preventDefault();
         errorElem.remove();
         blockPageHandler();
@@ -72,13 +73,13 @@
     window.backend.load(successHandler, errorHandler);
     window.utils.map.classList.remove('map--faded');
     sectionForm.classList.remove('ad-form--disabled');
-    window.utils.setAdressCoordinates();
+    window.utils.setAddressCoordinates();
     activateFormFildset();
     window.utils.mainPin.removeEventListener('click', activationPageHandler);
   };
 
   window.utils.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.ENTER_KEYCODE) {
+    if (evt.keyCode === window.const.ENTER_KEYCODE) {
       evt.preventDefault();
       activationPageHandler();
     }
@@ -92,10 +93,8 @@
     clearMap: clearMap,
     errorHandler: errorHandler
   };
-  window.utils.mainPin.addEventListener('mousedown', function (evt) {
-    var minLimitX = 130;
-    var maxLimitX = 630;
 
+  window.utils.mainPin.addEventListener('mousedown', function (evt) {
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -115,8 +114,8 @@
 
       var coordsX = window.utils.mainPin.offsetLeft - shift.x;
       var coordsY = window.utils.mainPin.offsetTop - shift.y;
-      var coordsMinX = minLimitX - window.utils.pinImg.offsetHeight;
-      var coordsMaxX = maxLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMinX = window.const.MIN_X - window.utils.pinImg.offsetHeight;
+      var coordsMaxX = window.const.MAX_X - window.utils.pinImg.offsetHeight;
       var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
       var coordsMaxY = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
 
@@ -128,7 +127,7 @@
 
       window.utils.mainPin.style.left = coordsX + 'px';
       window.utils.mainPin.style.top = coordsY + 'px';
-      window.utils.setAdressCoordinates();
+      window.utils.setAddressCoordinates();
     };
 
     var mouseUpHandler = function () {
@@ -138,6 +137,5 @@
 
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
-
   });
 })();
